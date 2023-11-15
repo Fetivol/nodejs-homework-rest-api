@@ -40,7 +40,7 @@ export async function removeContact(contactId) {
   }
 }
 
-export async function addContact(name, email, phone) {
+export async function addContact({ name, email, phone }) {
   try {
     const contacts = await listContacts();
     const newContact = {
