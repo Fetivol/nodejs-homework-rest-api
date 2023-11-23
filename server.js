@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 
 import app from "./app.js";
 
-// import { DB_HOST } from "./config.js";
-const { DB_HOST } = process.env;
+const { DB_HOST, PORT = 3000 } = process.env;
+
 mongoose
-  .connect(DB_HOST, (PORT = 3000))
+  .connect(DB_HOST)
   .then(() => {
     app.listen(PORT, () => {
       console.log(`Server running. Use our API on port: ${PORT}`);
