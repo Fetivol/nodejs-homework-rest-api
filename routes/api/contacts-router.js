@@ -6,10 +6,7 @@ import { isEmptyBody } from "../../middlewares/index.js";
 
 import { validateBody } from "../../decorators/index.js";
 
-import {
-  contactAddSchema,
-  contactUpdateSchema,
-} from "../../schemas/contacts-schemas.js";
+import { contactAddSchema, contactUpdateSchema } from "../../models/Contact.js";
 
 const contactsRouter = express.Router();
 
@@ -17,12 +14,12 @@ contactsRouter.get("/", contactsControllers.getAll);
 
 // contactsRouter.get("/:contactId", contactsControllers.getById);
 
-// contactsRouter.post(
-//   "/",
-//   isEmptyBody,
-//   validateBody(contactAddSchema),
-//   contactsControllers.add
-// );
+contactsRouter.post(
+  "/",
+  isEmptyBody,
+  validateBody(contactAddSchema),
+  contactsControllers.add
+);
 
 // contactsRouter.delete("/:contactId", contactsControllers.deleteById);
 
