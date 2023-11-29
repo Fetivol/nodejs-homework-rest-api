@@ -4,8 +4,6 @@ import { ctrlWrapper } from "../decorators/index.js";
 
 import { HttpError } from "../helpers/index.js";
 
-import { contactAddSchema, contactUpdateSchema } from "../models/Contact.js";
-
 const getAll = async (req, res) => {
   const result = await Contact.find({}, "-createdAt -updatedAt");
   res.status(200).json(result);
