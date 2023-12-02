@@ -6,9 +6,16 @@ import { HttpError } from "../helpers/index.js";
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = 20 } = req.query;
+  const { page = 1, limit = 20, favorite } = req.query;
+  console.log(favorite);
   const skip = (page - 1) * limit;
-  const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
+
+  const filterCriteria = { owner };
+  if (favorite !== undefined) {
+    filterCriteria.favorite = favorite;
+  }
+
+  const result = await Contact.find(filterCriteria, "-createdAt -updatedAt", {
     skip,
     limit,
   }).populate("owner", "username email");
