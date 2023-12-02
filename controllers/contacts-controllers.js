@@ -11,7 +11,7 @@ const getAll = async (req, res) => {
   const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
     skip,
     limit,
-  });
+  }).populate("owner", "username email");
   res.status(200).json(result);
 };
 const getById = async (req, res) => {
