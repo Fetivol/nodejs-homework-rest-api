@@ -6,14 +6,18 @@ import { HttpError } from "../helpers/index.js";
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
-  const result = await Contact.find({ owner }, "-createdAt -updatedAt");
+  const { page = 1, limit = 20 } = req.query;
+  const skip = (page - 1) * limit;
+  const result = await Contact.find({ owner }, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  });
   res.status(200).json(result);
 };
 const getById = async (req, res) => {
   const { _id: owner } = req.user;
   const { contactId } = req.params;
   const result = await Contact.findOne({ _id: contactId, owner });
-  // const result = await Contact.findById(contactId, "-createdAt -updatedAt");
   if (!result) {
     throw HttpError(404, `Contact with id=${contactId} not found`);
   }
