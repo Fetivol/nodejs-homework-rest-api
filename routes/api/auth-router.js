@@ -6,7 +6,10 @@ import { authenticate, isEmptyBody } from "../../middlewares/index.js";
 
 import { validateBody } from "../../decorators/index.js";
 
-import { userSignupSchema, userSigninSchema } from "../../models/User.js";
+import {
+  userSignupSchema,
+  userSigninSchema,
+} from "../../utils/validation/authValidationSchemas.js";
 
 const authRouter = express.Router();
 

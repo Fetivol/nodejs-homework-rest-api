@@ -30,16 +30,5 @@ userSchema.post("save", handleSaveError);
 userSchema.pre("findOneAndUpdate", preUpdate);
 userSchema.post("findOneAndUpdate", handleSaveError);
 
-export const userSignupSchema = Joi.object({
-  username: Joi.string().required(),
-  email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).required(),
-});
-
-export const userSigninSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
-  password: Joi.string().min(6).required(),
-});
-
 const User = model("user", userSchema);
 export default User;
