@@ -8,7 +8,9 @@ import Jimp from "jimp";
 import User from "../models/User.js";
 import { ctrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
+
 const { JWT_SECRET } = process.env;
+const posterPath = path.resolve("public", "avatars");
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -69,6 +71,13 @@ const logout = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(posterPath, filename);
+
+  console.log(filename);
+
+  console.log(oldPath);
+  console.log(newPath);
 };
 
 export default {
