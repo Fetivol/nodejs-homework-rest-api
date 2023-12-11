@@ -26,7 +26,6 @@ contactsRouter.get("/:contactId", isValidId, contactsControllers.getById);
 
 contactsRouter.post(
   "/",
-  upload.single("poster"),
   isEmptyBody,
   validateBody(contactAddSchema),
   contactsControllers.add

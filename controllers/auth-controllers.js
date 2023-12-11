@@ -10,7 +10,7 @@ import { ctrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
 
 const { JWT_SECRET } = process.env;
-const posterPath = path.resolve("public", "avatars");
+const avatarPath = path.resolve("public", "avatars");
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -20,7 +20,11 @@ const register = async (req, res) => {
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
-  const avatarURL = gravatar.url(email);
+  const avatarURL = gravatar.url(email, {
+    s: "250",
+    d: "robohash",
+    protocol: "https",
+  });
 
   const newUser = await User.create({
     ...req.body,
@@ -72,12 +76,15 @@ const logout = async (req, res) => {
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: oldPath, filename } = req.file;
-  const newPath = path.join(posterPath, filename);
+  const newPath = path.join(avatarPath, filename);
+  await fs.rename(oldPath, newPath);
 
-  console.log(filename);
+  const image = await Jimp.read(newPath);
+  await image.resize(250, 250).writeAsync(newPath);
 
-  console.log(oldPath);
-  console.log(newPath);
+  const avatarURL = path.join("avatars", filename);
+  await User.findByIdAndUpdate(_id, { avatarURL });
+  res.status(201).json(avatarURL);
 };
 
 export default {
