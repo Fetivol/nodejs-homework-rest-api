@@ -38,7 +38,8 @@ const register = async (req, res) => {
   const verifyEmail = {
     to: email,
     subject: "Verify email",
-    html: `<h2>Hello, ${username}</h2><img src="${avatarURL}"/><a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click verify email</a>`,
+    html: `<h2>Hello, ${username}</h2><img src="${avatarURL}"/>
+    <a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}">Click verify email</a>`,
   };
 
   await sendEmail(verifyEmail);
@@ -47,6 +48,27 @@ const register = async (req, res) => {
     username: newUser.username,
     email: newUser.email,
     avatarURL: newUser.avatarURL,
+  });
+};
+
+const verify = async (req, res) => {
+  const { verificationToken } = req.params;
+  console.log(verificationToken);
+  console.log(req.params.verificationToken);
+
+  const user = await User.findOne({ verificationToken });
+  console.log(user);
+  if (!user) {
+    throw HttpError(404, "User not found");
+  }
+  console.log(verificationToken === user.verificationToken);
+  await User.findOneAndUpdate(user._id, {
+    verify: true,
+    verificationToken: "",
+  });
+
+  res.json({
+    message: "Verification successful",
   });
 };
 
@@ -106,6 +128,7 @@ const updateAvatar = async (req, res) => {
 
 export default {
   register: ctrlWrapper(register),
+  verify: ctrlWrapper(verify),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
