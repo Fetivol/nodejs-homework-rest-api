@@ -1,4 +1,4 @@
-import Joi from "joi";
+// import Joi from "joi";
 import { Schema, model } from "mongoose";
 import { handleSaveError, preUpdate } from "./hooks.js";
 
@@ -22,6 +22,10 @@ const userSchema = new Schema(
       required: [true, "Set password for user"],
     },
     token: { type: String },
+    avatarURL: {
+      type: String,
+      required: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );
