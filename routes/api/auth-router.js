@@ -9,6 +9,7 @@ import { validateBody } from "../../decorators/index.js";
 import {
   userSignupSchema,
   userSigninSchema,
+  userEmailSchema,
 } from "../../utils/validation/authValidationSchemas.js";
 
 const authRouter = express.Router();
@@ -18,6 +19,14 @@ authRouter.post(
   isEmptyBody,
   validateBody(userSignupSchema),
   authController.register
+);
+
+authRouter.get("/verify/:verificationToken", authController.verify);
+
+authRouter.post(
+  "/verify",
+  validateBody(userEmailSchema),
+  authController.resendVerify
 );
 
 authRouter.post(
