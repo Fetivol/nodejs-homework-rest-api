@@ -57,7 +57,7 @@ const verify = async (req, res) => {
   console.log(req.params.verificationToken);
 
   const user = await User.findOne({ verificationToken });
-  console.log(user);
+
   if (!user) {
     throw HttpError(404, "User not found");
   }
